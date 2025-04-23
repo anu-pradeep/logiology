@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../api_path/api.dart';
 import '../model/product_model.dart';
 
 class ProductController extends GetxController {
@@ -24,7 +25,8 @@ class ProductController extends GetxController {
   Future<void> fetchProducts() async {
     try {
       isLoading(true);
-      final response = await http.get(Uri.parse('https://dummyjson.com/products'));
+      // final response = await http.get(Uri.parse('https://dummyjson.com/products'));
+      final response = await http.get(Uri.parse(ProductApi.baseApi+ProductApi.pdtApi));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -33,14 +35,14 @@ class ProductController extends GetxController {
         products.value = productList.map((item) => Product.fromJson(item)).toList();
         filteredProducts.value = List.from(products);
 
-        // Extract unique categories
+
         final Set<String> uniqueCategories = {};
         for (var product in products) {
           uniqueCategories.add(product.category);
         }
         categories.value = uniqueCategories.toList()..sort();
 
-        // Find min and max price
+
         if (products.isNotEmpty) {
           minPrice.value = products.map((p) => p.price).reduce((a, b) => a < b ? a : b);
           maxPrice.value = products.map((p) => p.price).reduce((a, b) => a > b ? a : b);

@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      // home:LoginScreen(),
-      home: LoginPage(), // claude ai code
+
+      home: LoginPage(),
     );
   }
 }
